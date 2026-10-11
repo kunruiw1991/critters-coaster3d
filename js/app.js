@@ -2664,24 +2664,18 @@
 
     camera.position.copy(state.camBasePos);
 
-    let rollJolt = 0;
     if (state.trauma > 0) {
-      state.trauma = Math.max(0, state.trauma - 1.55 * dt);
+      state.trauma = Math.max(0, state.trauma - 2.4 * dt);
       const shake = state.trauma * state.trauma;
       const t = state.simTime || performance.now() * 0.001;
-      const n1 = Math.sin(t * 145.0) * 0.55 + Math.cos(t * 231.0) * 0.45;
-      const n2 = Math.cos(t * 181.0) * 0.55 + Math.sin(t * 257.0) * 0.45;
-      const n3 = Math.sin(t * 197.0);
+      const n1 = Math.sin(t * 28.0) * 0.55 + Math.cos(t * 41.0) * 0.45;
+      const n2 = Math.cos(t * 33.0) * 0.55 + Math.sin(t * 47.0) * 0.45;
       camera.position
-        .addScaledVector(camBehindFrame.right, 0.58 * shake * n1)
-        .addScaledVector(camBehindFrame.up, 0.52 * shake * n2);
-      rollJolt = 0.065 * shake * n3;
+        .addScaledVector(camBehindFrame.right, 0.12 * shake * n1)
+        .addScaledVector(camBehindFrame.up, 0.10 * shake * n2);
     }
 
     camera.lookAt(camLookFrame.pos);
-    if (rollJolt !== 0) {
-      camera.rotateZ(rollJolt);
-    }
 
     const targetFov = (p.turboTimer > 0 || state.feverTimer > 0) ? 70 : 62;
     if (Math.abs(camera.fov - targetFov) > 0.05) {
