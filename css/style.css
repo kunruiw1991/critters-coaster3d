@@ -1,0 +1,1152 @@
+:root {
+  --bg-deep: #13092b;
+  --glass-bg: rgba(22, 14, 52, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --gold: #ffd93d;
+  --cyan: #38ef7d;
+  --neon-blue: #00d2ff;
+  --pink: #ff4b91;
+  --purple: #a855f7;
+  --danger: #ff4757;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 25%, #2a1863 0%, #100726 100%);
+  font-family: "Trebuchet MS", "Fredoka", "Segoe UI Emoji", sans-serif;
+  color: #ffffff;
+  touch-action: none;
+}
+
+#game-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#coaster-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Active Rainbow Fever Screen Border Timer */
+#rainbow-fever-border {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  border: 6px solid transparent;
+  border-image: linear-gradient(135deg, #ff4b91, #ffd93d, #38ef7d, #00d2ff, #a855f7) 1;
+  box-shadow: inset 0 0 28px rgba(255, 217, 61, 0.65);
+  animation: feverBorderPulse 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes feverBorderPulse {
+  0% { opacity: 0.65; }
+  100% { opacity: 1; }
+}
+
+#loading-bar-wrap {
+  width: 180px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+#loading-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #00d2ff, #38ef7d, #ffd93d);
+}
+
+.glass-pill {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.42);
+}
+
+/* ==================== TOP HUD ==================== */
+#top-hud {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+
+#top-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+#critter-picker-toggle,
+#stage-rail,
+#utility-cluster,
+#critter-drawer {
+  pointer-events: auto;
+}
+
+#critter-picker-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 12px 4px 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  transition: transform 0.14s ease, border-color 0.14s ease;
+  flex-shrink: 0;
+}
+
+#critter-picker-toggle:hover,
+#critter-picker-toggle:active {
+  transform: scale(1.04);
+  border-color: var(--gold);
+}
+
+#active-critter-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  background: #221642;
+}
+
+.caret-icon {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+/* 8 Coaster Worlds Stage Rail */
+#stage-rail {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  overflow-x: auto;
+  max-width: calc(100vw - 260px);
+  scrollbar-width: none;
+}
+
+#stage-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.stage-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 36px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  transition: transform 0.14s ease, background 0.14s ease;
+  flex-shrink: 0;
+}
+
+.stage-pill-btn.active {
+  background: linear-gradient(135deg, #ff7eb3, #7afcff);
+  color: #160933;
+  border-color: #ffffff;
+  transform: scale(1.06);
+  box-shadow: 0 0 12px rgba(122, 252, 255, 0.7);
+}
+
+.stage-pill-btn.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.stage-stars-mini {
+  font-size: 10px;
+  letter-spacing: -1px;
+}
+
+#utility-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+}
+
+#total-stars-badge {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--gold);
+  padding: 0 4px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.12s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+/* 8-Critter Drawer */
+#critter-drawer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 22px;
+  align-self: flex-start;
+}
+
+.critter-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 40px;
+  padding: 4px 9px 4px 5px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.critter-option-btn img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.critter-option-btn.selected {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(255, 217, 61, 0.35), rgba(255, 75, 145, 0.35));
+  transform: scale(1.06);
+}
+
+/* Race Telemetry Row */
+#race-telemetry-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+#rank-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+#track-spline-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  min-width: 100px;
+}
+
+.track-end-icon {
+  font-size: 15px;
+}
+
+#track-line-wrap {
+  position: relative;
+  flex: 1;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  overflow: visible;
+}
+
+#track-fill-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00d2ff, #38ef7d, #ffd93d, #ff4b91);
+  transition: width 0.08s linear;
+}
+
+#track-markers-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.track-cart-dot {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  background-size: cover;
+  background-position: center;
+  transition: left 0.08s linear;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.track-cart-dot.is-player {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--gold);
+  z-index: 4;
+  box-shadow: 0 0 10px var(--gold);
+}
+
+#score-pill {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+#coin-counter {
+  display: inline-block;
+  transition: transform 0.14s cubic-bezier(0.2, 1.5, 0.4, 1), color 0.14s ease;
+}
+
+#coin-counter.coin-pop {
+  transform: scale(1.42);
+  color: var(--gold);
+  text-shadow: 0 0 10px var(--gold);
+}
+
+/* 5-Segment Visual Speed Bar (Replaces Raw Speed Number) */
+#speed-segments {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.speed-seg {
+  width: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.speed-seg:nth-child(1) { height: 6px; }
+.speed-seg:nth-child(2) { height: 8px; }
+.speed-seg:nth-child(3) { height: 11px; }
+.speed-seg:nth-child(4) { height: 13px; }
+.speed-seg:nth-child(5) { height: 16px; }
+
+.speed-seg.active {
+  background: linear-gradient(180deg, #ffd93d, #38ef7d);
+  box-shadow: 0 0 6px rgba(56, 239, 125, 0.7);
+}
+
+.speed-seg.turbo-hot {
+  background: linear-gradient(180deg, #ff4b91, #ffd93d);
+  box-shadow: 0 0 8px rgba(255, 75, 145, 0.9);
+}
+
+/* Live 5-Critter Standings Strip */
+#live-standings-strip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.standing-mini-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px 2px 3px;
+  border-radius: 999px;
+  background: rgba(18, 11, 43, 0.72);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.standing-mini-chip.is-player {
+  border-color: var(--gold);
+  background: rgba(255, 217, 61, 0.24);
+}
+
+.standing-mini-chip img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ==================== CENTER VISUAL CALLOUT ==================== */
+#center-callout {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  pointer-events: none;
+  text-align: center;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
+  animation: calloutPop 0.35s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+
+#callout-icon {
+  font-size: clamp(44px, 8vw, 76px);
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+#callout-sub {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 900;
+  color: var(--gold);
+}
+
+@keyframes calloutPop {
+  0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ==================== BOTTOM COCKPIT ==================== */
+#bottom-cockpit {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.cockpit-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.coaster-btn {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.45);
+  background: linear-gradient(160deg, rgba(45, 30, 98, 0.92), rgba(21, 13, 52, 0.94));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  transition: transform 0.1s ease, border-color 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.coaster-btn:active,
+.coaster-btn.pressed {
+  transform: translateY(3px) scale(0.95);
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(255, 217, 61, 0.75);
+}
+
+.hop-btn {
+  background: linear-gradient(160deg, rgba(16, 185, 129, 0.9), rgba(5, 110, 79, 0.94));
+}
+
+/* Urgent Gate Ahead Hop Cue */
+#btn-hop.hop-urgent {
+  border-color: var(--gold);
+  box-shadow: 0 0 22px rgba(255, 217, 61, 0.95), 0 0 32px rgba(255, 71, 87, 0.85);
+  animation: hopUrgentPulse 0.32s ease-in-out infinite alternate;
+}
+
+#hop-alert-badge {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 13px;
+  z-index: 4;
+}
+
+@keyframes hopUrgentPulse {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.12); }
+}
+
+.pedal-1 {
+  background: linear-gradient(160deg, rgba(56, 189, 248, 0.92), rgba(29, 78, 216, 0.94));
+}
+
+.pedal-2 {
+  background: linear-gradient(160deg, rgba(250, 204, 21, 0.92), rgba(234, 88, 12, 0.94));
+}
+
+.pedal-3 {
+  background: linear-gradient(160deg, rgba(244, 63, 94, 0.92), rgba(159, 18, 57, 0.94));
+}
+
+/* 3 Clear Pedal States: Active, Cooling, Ready-Pop, and Cooldown-Tap Wobble */
+.pedal-btn.pedal-active {
+  border-color: #ffffff;
+  box-shadow: 0 0 24px var(--gold), inset 0 0 14px rgba(255, 255, 255, 0.65);
+  animation: pedalActiveGlow 0.35s ease-in-out infinite alternate;
+}
+
+.pedal-btn.pedal-active .pedal-cooldown-fill {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 217, 61, 0.28));
+}
+
+.pedal-btn.pedal-cooling {
+  filter: saturate(0.55) brightness(0.85);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.pedal-btn.pedal-ready-pop {
+  animation: pedalReadyPop 0.38s cubic-bezier(0.2, 1.5, 0.4, 1);
+  border-color: var(--gold);
+  box-shadow: 0 0 22px var(--gold);
+}
+
+.pedal-btn.pedal-wobble {
+  animation: pedalWobble 0.28s ease-in-out;
+  border-color: var(--danger);
+}
+
+@keyframes pedalActiveGlow {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes pedalReadyPop {
+  0% { transform: scale(0.92); }
+  60% { transform: scale(1.16); }
+  100% { transform: scale(1.0); }
+}
+
+@keyframes pedalWobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-4deg); }
+  75% { transform: translateX(5px) rotate(4deg); }
+}
+
+.pedal-cooldown-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: rgba(8, 4, 22, 0.68);
+  pointer-events: none;
+  transition: height 0.08s linear;
+}
+
+.btn-glyph {
+  font-size: 24px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.btn-sub {
+  font-size: 12px;
+  line-height: 1;
+  z-index: 2;
+}
+
+.key-badge {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--gold);
+  z-index: 2;
+}
+
+/* Center 3-Rail Visual Mini-Map + 16px Rainbow Fever Meter */
+#fever-cockpit-core {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 22px;
+}
+
+#lane-indicator-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lane-dot {
+  width: 28px;
+  height: 22px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.lane-dot.active {
+  background: var(--gold);
+  border-color: #fff;
+  box-shadow: 0 0 10px var(--gold);
+  transform: scale(1.08);
+}
+
+.lane-dot.lane-blocked {
+  border-color: var(--danger);
+  background: rgba(255, 71, 87, 0.38);
+}
+
+#fever-ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#fever-icon {
+  display: inline-block;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+#fever-icon.fever-active {
+  filter: drop-shadow(0 0 8px var(--gold)) drop-shadow(0 0 14px var(--pink));
+  animation: feverIconBounce 0.28s ease-in-out infinite alternate;
+}
+
+@keyframes feverIconBounce {
+  0% { transform: scale(1.05) rotate(-8deg); }
+  100% { transform: scale(1.32) rotate(8deg); }
+}
+
+#fever-bar-outer {
+  width: 96px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.42);
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+#fever-bar-outer.fever-almost-ready {
+  border-color: var(--gold);
+  box-shadow: 0 0 14px var(--gold), 0 0 22px var(--pink);
+  animation: hopUrgentPulse 0.35s ease-in-out infinite alternate;
+}
+
+#fever-bar-outer.fever-active {
+  border-color: #ffffff;
+  box-shadow: 0 0 18px var(--gold), 0 0 28px var(--cyan), 0 0 36px var(--pink);
+  animation: hopUrgentPulse 0.24s ease-in-out infinite alternate;
+}
+
+#fever-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff4b91, #ffd93d, #38ef7d, #00d2ff, #a855f7);
+  background-size: 200% 100%;
+  animation: rainbowShift 1.4s linear infinite;
+}
+
+#fever-bar-outer.fever-active #fever-bar-fill {
+  animation-duration: 0.45s;
+}
+
+@keyframes rainbowShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ==================== PODIUM MODAL ==================== */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(9, 5, 24, 0.78);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.glass-modal {
+  width: min(520px, 95vw);
+  max-height: calc(100vh - 20px);
+  max-height: calc(100dvh - 20px);
+  overflow-y: auto;
+  background: linear-gradient(165deg, rgba(38, 22, 88, 0.96), rgba(17, 10, 44, 0.98));
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-radius: 28px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.72);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-modal.podium-victory {
+  border-color: var(--gold);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.72), 0 0 32px rgba(255, 217, 61, 0.45);
+}
+
+.glass-modal.podium-defeat {
+  background: linear-gradient(165deg, rgba(48, 16, 42, 0.97), rgba(18, 12, 34, 0.99));
+  border-color: var(--danger);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.82), 0 0 28px rgba(255, 71, 87, 0.48);
+}
+
+#podium-header-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.crown-bounce {
+  font-size: 46px;
+  line-height: 1;
+}
+
+#podium-stars-row {
+  display: flex;
+  gap: 8px;
+  font-size: 34px;
+}
+
+.podium-star {
+  filter: grayscale(1) opacity(0.32);
+  transform: scale(0.85);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.podium-star.earned {
+  filter: none;
+  transform: scale(1.12);
+}
+
+#podium-rank-chip,
+#webgl-fallback-chip {
+  font-size: 42px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--gold);
+  padding: 4px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.glass-modal.podium-defeat #podium-rank-chip {
+  color: #fda4af;
+  background: rgba(255, 71, 87, 0.22);
+  border: 2px solid rgba(255, 71, 87, 0.55);
+}
+
+/* 5-Critter Podium Columns */
+#podium-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  gap: 8px;
+  width: 100%;
+  min-height: 155px;
+  padding: 8px 4px 0;
+}
+
+.podium-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.podium-avatar-wrap {
+  position: relative;
+}
+
+.podium-avatar-wrap img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.65);
+}
+
+.podium-column.is-player .podium-avatar-wrap img {
+  border-color: var(--gold);
+  box-shadow: 0 0 14px var(--gold);
+}
+
+.podium-column.is-player.player-defeated .podium-avatar-wrap img {
+  border-color: var(--danger);
+  box-shadow: 0 0 14px rgba(255, 71, 87, 0.85);
+  filter: saturate(0.72);
+}
+
+.podium-status-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 16px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.podium-pillar {
+  width: 100%;
+  border-radius: 14px 14px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 6px;
+  font-weight: 900;
+  font-size: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.podium-column.is-player.player-defeated .podium-pillar {
+  border-color: var(--danger);
+  background: rgba(255, 71, 87, 0.24);
+}
+
+.pillar-1 { height: 96px; background: linear-gradient(180deg, #ffd93d, #f59e0b); color: #1d0c3b; }
+.pillar-2 { height: 78px; background: linear-gradient(180deg, #e2e8f0, #94a3b8); color: #1d0c3b; }
+.pillar-3 { height: 64px; background: linear-gradient(180deg, #fb923c, #b45309); color: #fff; }
+.pillar-4 { height: 48px; background: rgba(255, 255, 255, 0.14); color: #cbd5e1; }
+.pillar-5 { height: 38px; background: rgba(255, 255, 255, 0.1); color: #94a3b8; }
+
+#qualification-rule-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.qual-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.68;
+  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+}
+
+.qual-chip.pass {
+  border: 1.5px solid rgba(56, 239, 125, 0.6);
+}
+
+.qual-chip.fail {
+  border: 1.5px solid rgba(255, 71, 87, 0.6);
+}
+
+.qual-chip.active-qual {
+  opacity: 1;
+  transform: scale(1.12);
+}
+
+.qual-chip.pass.active-qual {
+  border-color: var(--gold);
+  background: rgba(56, 239, 125, 0.28);
+  box-shadow: 0 0 12px rgba(56, 239, 125, 0.75);
+}
+
+.qual-chip.fail.active-qual {
+  border-color: #fff;
+  background: rgba(255, 71, 87, 0.42);
+  box-shadow: 0 0 14px rgba(255, 71, 87, 0.85);
+}
+
+#podium-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.modal-action-btn {
+  min-width: 124px;
+  padding: 10px 20px;
+  border-radius: 18px;
+  border: 2.5px solid #fff;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  transition: transform 0.12s ease;
+}
+
+.modal-action-btn:active {
+  transform: scale(0.95);
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.retry-btn.retry-pulse {
+  border-color: var(--gold);
+  box-shadow: 0 0 22px rgba(59, 130, 246, 0.9), 0 0 32px rgba(255, 217, 61, 0.75);
+  animation: hopUrgentPulse 0.36s ease-in-out infinite alternate;
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* ==================== MOBILE PORTRAIT (360px - 680px, incl. 390x844) ==================== */
+@media (max-width: 680px) {
+  #top-hud {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    gap: 5px;
+  }
+
+  #critter-picker-toggle {
+    min-height: 44px;
+    padding: 4px 10px 4px 4px;
+    font-size: 14px;
+  }
+
+  #active-critter-img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  /* Give the 8 Coaster Worlds their own full-width wrapping row on phones so all 8 pills are visible! */
+  #stage-rail {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-radius: 18px;
+    padding: 5px 6px;
+    gap: 4px;
+  }
+
+  .stage-pill-btn {
+    flex: 1 1 calc(25% - 4px);
+    justify-content: center;
+    min-height: 34px;
+    padding: 3px 4px;
+    font-size: 11px;
+  }
+
+  #live-standings-strip {
+    top: 108px;
+  }
+
+  /* Compact two-deck phone cockpit: Fever core on top, Steer (left thumb) + Pedals (right thumb) side-by-side below! */
+  #bottom-cockpit {
+    bottom: 8px;
+    left: 6px;
+    right: 6px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  #fever-cockpit-core {
+    order: 1;
+    flex: 1 1 100%;
+    justify-content: center;
+    flex-direction: row;
+    gap: 8px;
+    padding: 4px 10px;
+  }
+
+  #steer-cluster {
+    order: 2;
+    gap: 5px;
+  }
+
+  #pedal-cluster {
+    order: 3;
+    gap: 5px;
+  }
+
+  .coaster-btn {
+    width: clamp(54px, 14.8vw, 66px);
+    height: clamp(56px, 14vw, 64px);
+    border-radius: 16px;
+  }
+
+  .btn-glyph {
+    font-size: 20px;
+  }
+
+  .btn-sub {
+    font-size: 10px;
+  }
+
+  .key-badge {
+    display: none;
+  }
+}
+
+/* ==================== MOBILE LANDSCAPE (max-height: 460px, incl. 844x390) ==================== */
+@media (max-height: 460px) {
+  #live-standings-strip {
+    display: none;
+  }
+
+  #bottom-cockpit {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    bottom: 6px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .cockpit-cluster {
+    gap: 8px;
+  }
+
+  .coaster-btn {
+    width: 60px;
+    height: 58px;
+  }
+
+  .glass-modal {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  .crown-bounce {
+    font-size: 32px;
+  }
+
+  #podium-stars-row {
+    font-size: 24px;
+  }
+
+  #podium-rank-chip {
+    font-size: 28px;
+    padding: 2px 14px;
+  }
+
+  #podium-stage-grid {
+    min-height: 112px;
+    padding-top: 4px;
+  }
+
+  .podium-avatar-wrap img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .pillar-1 { height: 68px; }
+  .pillar-2 { height: 56px; }
+  .pillar-3 { height: 46px; }
+  .pillar-4 { height: 34px; }
+  .pillar-5 { height: 28px; }
+
+  .modal-action-btn {
+    padding: 6px 16px;
+    font-size: 20px;
+  }
+}
